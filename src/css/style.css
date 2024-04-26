@@ -1,0 +1,81 @@
+* {
+  /* color: ; */
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Login and Sing Up Css */
+.login {
+  background-color: white;
+}
+
+.login .container {
+  height:100%;
+  width:100%;
+}
+
+.login .splitdiv{
+  width:50%;
+  height: 100vh;
+}
+
+.login #leftdiv{
+  float:left;
+  background-color: palegoldenrod;
+}
+
+.login #leftdivcard{
+  margin:0 auto;
+  width:50%;
+  margin-top: 50vh; 
+  transform: translateY(-50%);
+}
+
+.login #rightdiv{
+  float:right;
+  background-color: white;
+}
+
+.login #rightdivcard{
+  margin:0 auto;
+  width:50%;
+  margin-top: 50vh;
+  transform: translateY(-50%);
+}
+
+.login input {
+  width: 100%;
+  height:40px;
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  background-color:#FAFAFA;
+  box-sizing: border-box;
+  border:none;
+  border-radius: 20px;
+}
+
+.login .btn {
+  font-weight: bold;
+  font-size: medium;
+  width: 100%;
+  height:40px;
+  margin-bottom: 20px;
+  background-color: palegoldenrod;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+}
+
+.login .btn:hover {
+  opacity: 75%;
+}
+
+.login .field-icon {
+  float: right;
+  margin-right: 20px;
+  margin-top: -50px;
+  position: relative;
+  z-index: 2;
+}
