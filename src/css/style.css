@@ -13,7 +13,6 @@ body {
   position: absolute;
   top: 0;
   width: 100%;
-  padding-top: 80px;
 }
 
 header {
@@ -67,18 +66,13 @@ header {
   color: inherit;
 }
 
-.navbar .logo {
+.navbar .logo img{
   display: inline-block;
   margin-top: 5px;
   margin-left: 5%;
   width: 70px;
   height: 70px;
-  background-color: firebrick;
   transition: 0.5s ease;
-}
-
-.navbar .logo img {
-  display: none;
 }
 
 
@@ -227,6 +221,7 @@ header {
 .dropbtn {
   background-color: palegoldenrod;
   font-size: 16px;
+  font-weight: 400;
   border: none;
   cursor: pointer;
 }
@@ -243,9 +238,12 @@ header {
 .dropdown-content {
   display: none;
   position: absolute;
+  left: 50% !important;
+  right: auto !important;
+  transform: translate(-50%, 0) !important;
   background-color: #f1f1f1;
-  min-width: 160px;
-  overflow: auto;
+  width: 180px;
+  overflow: hidden;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -254,6 +252,9 @@ header {
   color: black;
   padding: 0px 15px;
   text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   display: block;
 }
 
@@ -263,4 +264,37 @@ header {
 
 .show {
   display: block;
+}
+
+/* Search Bar */
+.search-bar {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-btn {
+  background:palegoldenrod;
+  padding:10px 20px;
+  border-radius:0 5px 5px 0;
+  border:0 none;
+  font-weight:bold;
+}
+   
+  .search-box {
+  background: #eee;
+  padding:10px;
+  border-radius:5px 0 0 5px;
+  border:0 none;
+  width:400px;
+}
+
+/* Badge Shoping */
+.badge {
+  font-size: 12px;
+  background-color: red;
+  color: white;
+  padding: 4px 9px;
+  text-align: center;
+  border-radius: 50%;
 }
