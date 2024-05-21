@@ -16,26 +16,22 @@ require_once("auth.php");
     <div class="navbar">
       <ul class="nav">
         <li class="item">
-          <div class="dropdown">
-            <button class="nav-link dropbtn"><i class="fa-md fa-solid fa-cart-shopping"></i> Cart</button>
-            <div class="dropdown-content">
-              <a href="#" class="nav-link">Produk</a>
-            </div>
-          </div>
+            <a href="index.html" class="dropbtn"><i data-count="3" class="fa-md fa-solid fa-cart-shopping"></i> Cart  <span class="badge">0</span></a>
         </li>
         <li class="item">
           <div class="dropdown">
-            <button class="nav-link dropbtn"><i class="fa-lg fa-solid fa-person"></i> Account</button>
+            <a class="nav-link dropbtn"><i class="fa-lg fa-solid fa-person"></i> Account</a>
             <div class="dropdown-content">
               <a href="#" class="nav-link">Profile</a>
-              <a href="#" class="nav-link" href="logout.php">Logout</a>
+              <a href="#" class="nav-link">Dashboard</a>
+              <a href="#" class="nav-link">Logout</a>
             </div>
           </div>
         </li>
       </ul>
 
       <div class="logo">
-        <img src="">
+        <img src="https://source.unsplash.com/random/20%C3%9720/?fruit">
       </div>
     </div>
   </header>
@@ -63,6 +59,14 @@ require_once("auth.php");
     <span class="dot" onclick="currentSlide(3)"></span>
   </div>
   </section>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <form id="searchthis" action="#" method="get">
+      <input class="search-box" name="search" type="text" placeholder="Search"/>
+      <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+  </div>
 
 </body>
 <script src="https://kit.fontawesome.com/47dcae39d3.js" crossorigin="anonymous"></script>
