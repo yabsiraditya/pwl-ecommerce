@@ -1,5 +1,5 @@
-<?php
-require_once("auth.php");
+<?php 
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -20,11 +20,11 @@ require_once("auth.php");
         </li>
         <li class="item">
           <div class="dropdown">
-            <a class="nav-link dropbtn"><i class="fa-lg fa-solid fa-person"></i> Account</a>
+            <a class="nav-link dropbtn" href="<?php echo isset($_SESSION['user']) && $_SESSION['user'] ? '#' : 'login.php' ?>"></i> Account</a>
             <div class="dropdown-content">
               <a href="#" class="nav-link">Profile</a>
               <a href="#" class="nav-link">Dashboard</a>
-              <a href="#" class="nav-link">Logout</a>
+              <a href="logout.php" class="nav-link">Logout</a>
             </div>
           </div>
         </li>
