@@ -23,7 +23,9 @@ session_start();
             <a class="nav-link dropbtn" href="<?php echo isset($_SESSION['user']) && $_SESSION['user'] ? '#' : 'login.php' ?>"></i> Account</a>
             <div class="dropdown-content">
               <a href="#" class="nav-link">Profile</a>
+              <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
               <a href="#" class="nav-link">Dashboard</a>
+              <?php endif; ?>
               <a href="logout.php" class="nav-link">Logout</a>
             </div>
           </div>
