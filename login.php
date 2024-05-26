@@ -26,6 +26,7 @@ if(isset($_POST['submit'])){
     if($user["username"] == "admin") {
       if($password == $user["password"]){
         // buat Session
+        session_start();
         $_SESSION["user"] = true;
         $_SESSION['role'] = $user['role'];
         // login sukses, alihkan ke halaman timeline
@@ -35,7 +36,8 @@ if(isset($_POST['submit'])){
       // verifikasi password
       if(password_verify($password, $user["password"])){
           // buat Session
-          $_SESSION["user"] = true;
+          session_start();
+          $_SESSION['user'] = true;
           $_SESSION['role'] = $user['role'];
           // login sukses, alihkan ke halaman timeline
           header("Location: index.php");

@@ -1,5 +1,5 @@
-<?php 
-session_start();
+<?php
+session_start()
 ?>
 
 <!DOCTYPE html>
@@ -22,15 +22,17 @@ session_start();
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger">0</span></a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropbtn fw-medium" href="<?php echo isset($_SESSION['user']) && $_SESSION['user'] ? '#' : 'login.php' ?>">
+            <a class="nav-link dropbtn fw-medium" href="<?php if(!isset($_SESSION['user'])) {echo 'login.php';} else {echo '#';} ?> ">
             <i class="fa-solid fa-user"></i> Account
             </a>
+            <?php if(!isset($_SESSION['user'])): ?>
+            <?php else: ?>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item fw-medium" href="#">Profile</a></li>
               <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
@@ -39,6 +41,7 @@ session_start();
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item fw-medium" href="logout.php">Logout</a></li>
             </ul>
+            <?php endif; ?>
           </li>
         </ul>
       </div>
