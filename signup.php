@@ -12,8 +12,8 @@ if(isset($_POST['register'])) {
 
 
     // menyiapkan query
-    $sql = "INSERT INTO user (name, username, email, password) 
-            VALUES (:name, :username, :email, :password)";
+    $sql = "INSERT INTO user (name, username, email, password, role) 
+            VALUES (:name, :username, :email, :password, :role)";
     $stmt = $db->prepare($sql);
 
     // bind parameter ke query
@@ -21,7 +21,8 @@ if(isset($_POST['register'])) {
         ":name" => $name,
         ":username" => $username,
         ":password" => $password,
-        ":email" => $email
+        ":email" => $email,
+        ":role" => "user"
     );
 
     // eksekusi query untuk menyimpan ke database

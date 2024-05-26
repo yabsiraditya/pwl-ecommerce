@@ -1,6 +1,10 @@
 <?php
 require 'koneksi.php';
-if(isset($_POST['submit'])) {
+if (isset($_SESSION['user']) && $_SESSION['user'] === true) {
+  header('Location: index.php'); // Redirect to the index page or any other page
+  exit();
+}
+if(isset($_POST['submit'])){
 
   $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
   $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
@@ -19,14 +23,26 @@ if(isset($_POST['submit'])) {
 
   // jika user terdaftar
   if($user){
+    if($user["username"] == "admin") {
+      if($password == $user["password"]){
+        // buat Session
+        session_start();
+        $_SESSION["user"] = true;
+        $_SESSION['role'] = $user['role'];
+        // login sukses, alihkan ke halaman timeline
+        header("Location: index.php");
+    }
+    } else {
       // verifikasi password
       if(password_verify($password, $user["password"])){
           // buat Session
           session_start();
-          $_SESSION["user"] = $user;
+          $_SESSION['user'] = true;
+          $_SESSION['role'] = $user['role'];
           // login sukses, alihkan ke halaman timeline
           header("Location: index.php");
       }
+    }
   }
 }
 
