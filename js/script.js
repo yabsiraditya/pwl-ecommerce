@@ -19,3 +19,10 @@ window.addEventListener('load', function() {
     }
   })
 })
+
+const field = document.getElementById("password");
+const button = document.getElementById("form-submit");
+
+field.addEventListener("input", function() {
+  button.disabled = field.value.length < 8;
+})

@@ -31,6 +31,8 @@ if(isset($_POST['submit'])){
         $_SESSION['role'] = $user['role'];
         // login sukses, alihkan ke halaman timeline
         header("Location: index.php");
+    } else {
+      $error = 'Password yang anda masukkan salah!';
     }
     } else {
       // verifikasi password
@@ -42,7 +44,12 @@ if(isset($_POST['submit'])){
           // login sukses, alihkan ke halaman timeline
           header("Location: index.php");
       }
-    }
+      else {
+        $error = 'Password yang anda masukkan salah!';
+      }
+    } 
+  } else {
+    $error = "Username tidak ditemukan!";
   }
 }
 
