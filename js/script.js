@@ -26,3 +26,12 @@ const button = document.getElementById("form-submit");
 field.addEventListener("input", function() {
   button.disabled = field.value.length < 8;
 })
+
+
+
+
+// Sidebar Dashboard
+const sidebarToggle = document.querySelector("#sidebar-toggle");
+sidebarToggle.addEventListener("click",function(){
+    document.querySelector("#sidebar").classList.toggle("collapsed");
+});
