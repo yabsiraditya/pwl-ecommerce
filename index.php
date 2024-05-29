@@ -1,5 +1,21 @@
 <?php
-session_start()
+session_start();
+require 'koneksi.php';
+
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+if ($search) {
+  $sql = "SELECT * from produk where title like :search";
+  $stmt = $db->prepare($sql);
+  $stmt->execute(['search' => "%$search%"]);
+} else {
+  $sql = "SELECT * FROM produk order by id_produk DESC";
+  $stmt = $db->prepare($sql);
+  $stmt->execute();
+}
+
+//  $produk = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -75,64 +91,46 @@ session_start()
 
   <!-- Search Bar -->
   <div class="d-flex justify-content-center align-items-center"> 
+    <form action= "" method="GET">
     <div class="container w-50 input-group mb-4 mt-5">
-      <input type="text" class="form-control" placeholder="Search" aria-describedby="button-addon2">
-      <button class="btn btn-primary" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <input type="text" class="form-control" placeholder="Search" aria-describedby="button-addon2" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>">
+      <button class="btn btn-primary" type="button" name="submit" id="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
+              </form>
   </div>
   <!-- Product -->
   <div class="container">
     <div class="row d-flex justify-content-start align-items-center">
+    <?php
+      while($row = $stmt->fetch(PDO::FETCH_ASSOC))  {  ?>
       <div class="col-6 col-md-4 mt-3">
         <div class="card">
           <img src="..." class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <h5 class="card-title"><?php echo $row['title'];?></h5>
+            <p class="card-text"><?php echo $row['desc_produk']; ?></p>
             <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>
         </div>
       </div>
+      <?php
+}
+            ?>
+             <?php
+      while($row = $stmt->fetch(PDO::FETCH_ASSOC))  {  ?>
       <div class="col-6 col-md-4 mt-3">
         <div class="card">
           <img src="..." class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <h5 class="card-title"><?php echo $row['title'];?></h5>
+            <p class="card-text"><?php echo $row['desc_produk']; ?></p>
             <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-4 mt-3">
-        <div class="card">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-4 mt-3">
-        <div class="card">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-4 mt-3">
-        <div class="card">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
+      <?php
+      }
+            ?>
     </div>
     <!-- Pagination -->
     <nav aria-label="Page navigation example">
