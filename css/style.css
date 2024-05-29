@@ -74,3 +74,95 @@
     background-color: palegoldenrod !important;
     border: solid 1px palegoldenrod;
 }
+
+/* Dashboard */
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+.wrapper {
+  align-items: stretch;
+  display: flex;
+  width: 100%;
+}
+
+#sidebar {
+  max-width: 264px;
+  min-width: 264px;
+  transition: all 0.35s ease-in-out;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+  overflow: hidden;
+  transition: all 0.35s ease-in-out;
+  width: 100%;
+}
+
+.sidebar-logo {
+  padding: 0.80rem 1rem .375rem;
+}
+
+.sidebar-logo h1 {
+  color: #c15440;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.nav-pills a{
+  color: black !important;
+}
+
+.nav-pills .active{
+  background-color: palegoldenrod !important;
+  color: black !important;
+}
+
+.sidebar-header {
+  font-size: .80rem;
+  padding: 0rem 1rem .375rem;
+}
+
+.navbar-expand .navbar-nav {
+  margin-left: auto;
+}
+
+.content {
+  flex: 1;
+  max-width: 100vw;
+  width: 100vw;
+}
+
+@media (min-width:768px) {
+  .content {
+      max-width: auto;
+      width: auto;
+  }
+}
+
+/* Sidebar Toggle */
+#sidebar.collapsed {
+  margin-left: -264px;
+}
+
+/* Table Dashboard */
+.description {
+  display: inline-block;
+  max-width: 80px;
+}

@@ -22,7 +22,7 @@ session_start()
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger">0</span></a>
@@ -85,15 +85,15 @@ session_start()
     <div class="row d-flex justify-content-start align-items-center">
       <div class="col-6 col-md-4 mt-3">
         <div class="card">
-          <img src="..." class="card-img-top" alt="...">
+          <img src="img/1.jpg" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <h5 class="card-title text-truncate">Roti Coklat Meses</h5>
+            <p class="card-text">Rp 29.000</p>
+            <a href="#" class="btn btn-primary">Show Product</a>
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-4 mt-3">
+      <!-- <div class="col-6 col-md-4 mt-3">
         <div class="card">
           <img src="..." class="card-img-top" alt="...">
           <div class="card-body">
@@ -133,7 +133,7 @@ session_start()
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- Pagination -->
     <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center mt-3">
