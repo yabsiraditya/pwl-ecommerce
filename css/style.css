@@ -166,3 +166,16 @@ li {
   display: inline-block;
   max-width: 80px;
 }
+
+/* Profile */
+.profile {
+  margin-top: 120px;
+}
+
+.nav-underline a{
+  color: black !important;
+}
+
+.nav-underline .active{
+  color: black !important;
+}
