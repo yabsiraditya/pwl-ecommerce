@@ -27,6 +27,7 @@ if(isset($_POST['submit'])){
       if($password == $user["password"]){
         // buat Session
         session_start();
+        $_SESSION["user_id"] = $user['user_id'];
         $_SESSION["user"] = true;
         $_SESSION['role'] = $user['role'];
         // login sukses, alihkan ke halaman timeline
@@ -39,6 +40,7 @@ if(isset($_POST['submit'])){
       if(password_verify($password, $user["password"])){
           // buat Session
           session_start();
+          $_SESSION["user_id"] = $user['user_id'];
           $_SESSION['user'] = true;
           $_SESSION['role'] = $user['role'];
           // login sukses, alihkan ke halaman timeline

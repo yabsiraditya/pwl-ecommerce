@@ -50,7 +50,7 @@ if ($search) {
             <?php if(!isset($_SESSION['user'])): ?>
             <?php else: ?>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item fw-medium" href="#">Profile</a></li>
+              <li><a class="dropdown-item fw-medium" href="profile.php">Profile</a></li>
               <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
               <li><a class="dropdown-item fw-medium" href="dashboard.php">Dashboard</a></li>
               <?php endif; ?>
@@ -108,7 +108,7 @@ if ($search) {
           <img src="<?php echo $row['gambar']?>" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title"><?php echo $row['nama'];?></h5>
-            <p class="card-text"><?php echo $row['harga']; ?></p>
+            <p class="card-text"><?php echo "Rp" . $row['harga']; ?></p>
             <a href="#" class="btn btn-primary">Show Product</a>
           </div>
         </div>
