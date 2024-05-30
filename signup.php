@@ -2,20 +2,46 @@
 require_once("koneksi.php");
 
 if(isset($_POST['register'])) {
-
     // filter data yang diinputkan
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    // enkripsi password
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
+    $sqlusername = "SELECT * FROM user WHERE username=:username";
+    $stmt = $db->prepare($sqlusername);
 
+    $params = array(
+      ":username" => $username,
+  );
+
+  $stmt->execute($params);
+
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  // jika user terdaftar
+  if($user){
+    $error = "Username telah terpakai";
+  } else {
+    $sqlemail = "SELECT * FROM user WHERE email=:email";
+    $stmt = $db->prepare($sqlemail);
+    $params = array(
+      ":email" => $email,
+    );
+    $stmt->execute($params);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      if ($user) {
+      $error = "Email telah digunakan!";
+    } else {
+      if(strlen($_POST['password']) <8) {
+        $error = "Password kurang dari 8";
+      } else {
+          // enkripsi password
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
     // menyiapkan query
-    $sql = "INSERT INTO user (name, username, email, password, role) 
+      $sql = "INSERT INTO user (name, username, email, password, role) 
             VALUES (:name, :username, :email, :password, :role)";
-    $stmt = $db->prepare($sql);
-
+      $stmt = $db->prepare($sql);
     // bind parameter ke query
     $params = array(
         ":name" => $name,
@@ -27,10 +53,10 @@ if(isset($_POST['register'])) {
 
     // eksekusi query untuk menyimpan ke database
     $saved = $stmt->execute($params);
-
-    // jika query simpan berhasil, maka user sudah terdaftar
-    // maka alihkan ke halaman login
     if($saved) header("Location: login.php");
+  }
+  }
+}
 }
 ?>
 
@@ -69,10 +95,16 @@ if(isset($_POST['register'])) {
               </div>
               <div class="mb-2">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control rounded-pill" name="password" id="password" required />
+                <input type="password" class="form-control rounded-pill" name="password" id="password" onKeyup='checkLength()' required />
+                <span id="errorSpan"></span>
               </div>
               <p class="mb-3" style="cursor:pointer;" onclick="showPassword()"><span class="field-icon fa fa-fw fa-eye toggle-password"></span> Show Password</p>
-              <button name="register" type="submit" class="btn btn-primary mb-3 rounded-pill w-100">Sign Up</button>
+              <button name="register" type="submit" disabled id="form-submit" class="btn btn-primary mb-3 rounded-pill w-100">Sign Up</button>
+              <?php 
+              if (isset($error)) {
+                echo "<p style='color: red;'>$error</p>";
+                }
+              ?>
               <p style="text-align: center;">Dont have an account? <a href="login.php" style="color: black; font-weight: 500;">Sign In</a></p>
             </form>  
         </div>
@@ -80,6 +112,7 @@ if(isset($_POST['register'])) {
     </div>
   </div>
 </body>
+
 <script src="https://kit.fontawesome.com/47dcae39d3.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

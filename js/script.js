@@ -20,6 +20,31 @@ window.addEventListener('load', function() {
   })
 })
 
+const field = document.getElementById("password");
+const button = document.getElementById("form-submit");
+
+field.addEventListener("input", function() {
+  button.disabled = field.value.length < 8;
+})
+
+
+// document.getElementById('edit').addEventListener("submit", function(event) {
+//   event.preventDefault(); // Prevent the form from submitting the traditional way
+//   // Display the modal
+//   $('#myModal').modal('show');
+// });
+
+$('#edit').submit(function(event){
+  // cancels the form submission
+  event.preventDefault();
+
+  //If the form is valid open modal
+  if($('#edit')[0].checkValidity() ){
+    $('#myModal').modal('toggle');
+  }
+// do whatever you want here
+});
+
 
 // Sidebar Dashboard
 const sidebarToggle = document.querySelector("#sidebar-toggle");
