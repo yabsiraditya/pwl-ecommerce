@@ -7,6 +7,7 @@ if ($search) {
   $sql = "SELECT * from produk where nama like :search";
   $stmt = $db->prepare($sql);
   $stmt->execute(['search' => "%$search%"]);
+  $products = $stmt->fetchAll();
 } else {
   $limit = 9;  // Jumlah item per halaman
   $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -22,9 +23,8 @@ if ($search) {
   $products = $stmt->fetchAll();
 }
 
-
-
-//  $produk = $stmt->fetch(PDO::FETCH_ASSOC);
+$total_product = 0;  
+$total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 
 
 ?>
@@ -52,7 +52,7 @@ if ($search) {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger">0</span></a>
+            <a class="nav-link fw-medium" href="cart.php"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?php echo $total_product; ?></span></a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropbtn fw-medium" href="<?php if(!isset($_SESSION['user'])) {echo 'login.php';} else {echo '#';} ?> ">
@@ -127,6 +127,8 @@ if ($search) {
       <?php endforeach; ?>
     </div>
     <!-- Pagination -->
+    <?php if($search): ?>
+    <?php else: ?>
     <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center mt-3">
     <?php if($page > 1): ?>
@@ -149,6 +151,7 @@ if ($search) {
         <?php endif; ?>
     </ul>
     </nav>
+    <?php endif; ?>
   </div>
 
   <!-- Footer -->
