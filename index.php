@@ -116,7 +116,7 @@ if ($search) {
       foreach ($products as $row):  ?>
       <div class="col-6 col-md-4 mt-3">
         <div class="card">
-          <img src="<?php echo $row['gambar']?>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="...">
+          <img src="<?php echo $row['gambar']?>" class="card-img-top" style="height: 300px; object-fit: cover;" alt="...">
           <div class="card-body">
             <h5 class="card-title"><?php echo $row['nama'];?></h5>
             <p class="card-text"><?php echo "Rp" . $row['harga']; ?></p>
