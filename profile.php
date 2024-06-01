@@ -86,7 +86,7 @@ if(isset($_POST['change_password'])) {
             <ul class="dropdown-menu">
               <li><a class="dropdown-item fw-medium" href="#">Profile</a></li>
               <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-              <li><a class="dropdown-item fw-medium" href="#">Dashboard</a></li>
+              <li><a class="dropdown-item fw-medium" href="dashboard.php">Dashboard</a></li>
               <?php endif; ?>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item fw-medium" href="logout.php">Logout</a></li>

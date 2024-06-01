@@ -8,7 +8,7 @@ if ($search) {
   $stmt = $db->prepare($sql);
   $stmt->execute(['search' => "%$search%"]);
 } else {
-  $limit = 5;  // Jumlah item per halaman
+  $limit = 9;  // Jumlah item per halaman
   $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   $start = ($page > 1) ? ($page * $limit) - $limit : 0;
 
@@ -103,11 +103,11 @@ if ($search) {
   <!-- Search Bar -->
   <div class="d-flex justify-content-center align-items-center"> 
     <form action= "" method="GET">
-    <div class="container w-50 input-group mb-4 mt-5">
+    <div class="input-group mb-4 mt-5">
       <input type="text" class="form-control" placeholder="Search" aria-describedby="button-addon2" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>">
       <button class="btn btn-primary" type="button" name="submit" id="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
-              </form>
+    </form>
   </div>
   <!-- Product -->
   <div class="container">
@@ -116,7 +116,7 @@ if ($search) {
       foreach ($products as $row):  ?>
       <div class="col-6 col-md-4 mt-3">
         <div class="card">
-          <img src="<?php echo $row['gambar']?>" class="card-img-top" alt="...">
+          <img src="<?php echo $row['gambar']?>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="...">
           <div class="card-body">
             <h5 class="card-title"><?php echo $row['nama'];?></h5>
             <p class="card-text"><?php echo "Rp" . $row['harga']; ?></p>
