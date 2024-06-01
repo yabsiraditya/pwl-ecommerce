@@ -120,7 +120,7 @@ if ($search) {
           <div class="card-body">
             <h5 class="card-title"><?php echo $row['nama'];?></h5>
             <p class="card-text"><?php echo "Rp" . $row['harga']; ?></p>
-            <a href="#" class="btn btn-primary">Show Product</a>
+            <a href="detail.php?id=<?= $row['id_produk'] ?>" class="btn btn-primary">Show Product</a>
           </div>
         </div>
       </div>
@@ -131,23 +131,14 @@ if ($search) {
     <ul class="pagination justify-content-center mt-3">
     <?php if($page > 1): ?>
     <li class="page-item">
-        <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+ 
+    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
       <?php endif; ?>
     <?php for ($i = 1; $i <= $pages; $i++): ?>
-      <!-- <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li> -->
       <li class="page-item <?= $page == $i ? 'active' : '' ?> "><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
-      <!-- <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li> -->
       <?php endfor; ?>
       <?php if($page < $pages): ?>
         <li class="page-item">
