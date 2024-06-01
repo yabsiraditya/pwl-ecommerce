@@ -2,7 +2,7 @@
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
-$db_name = "pwl";
+$db_name = "pwl2";
 
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

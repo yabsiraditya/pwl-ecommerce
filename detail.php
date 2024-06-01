@@ -1,9 +1,35 @@
+<?php 
+session_start();
+require 'koneksi.php';
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+  echo "ID produk tidak valid.";
+  exit;
+}
+
+$id = $_GET['id'];
+$sql = "SELECT * FROM produk WHERE id_produk = :id";
+$stmt = $db->prepare($sql);
+$params = array(
+  ":id" => $id,
+);
+
+$stmt->execute($params);
+
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product) {
+  echo "Produk tidak ditemukan.";
+  exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | Toko Roti Alta Bakery</title>
+  <title><?php echo $product['nama']; ?> | Toko Roti Alta Bakery</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link href="css/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -11,7 +37,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: palegoldenrod;">
     <div class="container">
-      <a class="navbar-brand fw-bold" style="color: #C15440;" href="#">
+      <a class="navbar-brand fw-bold" style="color: #C15440;" href="index.php">
         <img src="img/logo.png" alt="Logo" width="50" class="d-inline-block align-text-center me-2">
         ALTA BAKERY
       </a>
@@ -47,12 +73,12 @@
   <div class="container mt-5">
     <div class="row align-items-center">
       <div class="col-md-6 text-end">
-        <img src="img/photo.jpg" alt="" style="width: 450px; height: 450px; object-fit: cover;">
+        <img src="<?php echo $product['gambar'];?>" alt="" style="width: 450px; height: 450px; object-fit: cover;">
       </div>
       <div class="col-md-6">
-        <h1>Lorem ipsum dolor sit amet.</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum autem eligendi commodi ducimus ullam corrupti soluta eveniet, quam explicabo numquam.</p>
-        <h5>Rp10000</h5>
+        <h1><?php echo $product["nama"]; ?></h1>
+        <p><?php echo $product["desc_produk"]; ?></p>
+        <h5><?php echo "Rp" . $product["harga"]; ?></h5>
         <button name="add" type="submit" class="btn mt-2 mb-5 btn-primary w-100">Add Cart</button>
       </div>
     </div>
