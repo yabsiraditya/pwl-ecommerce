@@ -48,3 +48,10 @@ const sidebarToggle = document.querySelector("#sidebar-toggle");
 sidebarToggle.addEventListener("click",function(){
     document.querySelector("#sidebar").classList.toggle("collapsed");
 });
+function increment() {
+  document.getElementById('quantity').stepUp();
+}
+
+function decrement() {
+  document.getElementById('quantity').stepDown();
+}

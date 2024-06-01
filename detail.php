@@ -22,6 +22,34 @@ if (!$product) {
   echo "Produk tidak ditemukan.";
   exit;
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
+  if(isset($_SESSION['user'])) {
+    if (!isset($_SESSION['cart'])) {
+      $_SESSION['cart'] = [];
+  }
+  if (isset($_SESSION['cart'][$id])) {
+      $_SESSION['cart'][$id]['quantity']++;
+  } else {
+      $_SESSION['cart'][$id] = [
+          'nama' => $product['nama'],
+          'desc_produk' => $product['desc_produk'],
+          'harga' => $product['harga'],
+          'gambar' => $product['gambar'],
+          'quantity' => 1
+      ];
+  }
+
+  // Redirect ke halaman keranjang setelah menambahkan produk
+  header("Location: cart.php");
+  exit;
+  } else {
+    header("Location: login.php");
+    exit;
+  }
+  
+}
+//echo $product['desc_produk'];
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +107,13 @@ if (!$product) {
         <h1><?php echo $product["nama"]; ?></h1>
         <p><?php echo $product["desc_produk"]; ?></p>
         <h5><?php echo "Rp" . $product["harga"]; ?></h5>
+        <?php if(!isset($_SESSION['user'])): ?>
+          <h5>Login untuk melakukan transaksi!</h5>
+            <?php else: ?>
+        <form method="post">
         <button name="add" type="submit" class="btn mt-2 mb-5 btn-primary w-100">Add Cart</button>
+        </form>
+        <?php endif; ?>
       </div>
     </div>
   </div>
