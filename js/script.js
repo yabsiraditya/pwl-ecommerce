@@ -27,13 +27,6 @@ field.addEventListener("input", function() {
   button.disabled = field.value.length < 8;
 })
 
-
-// document.getElementById('edit').addEventListener("submit", function(event) {
-//   event.preventDefault(); // Prevent the form from submitting the traditional way
-//   // Display the modal
-//   $('#myModal').modal('show');
-// });
-
 $('#edit').submit(function(event){
   // cancels the form submission
   event.preventDefault();
