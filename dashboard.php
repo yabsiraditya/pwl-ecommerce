@@ -255,6 +255,7 @@ if(isset($_POST['submitdelete']) ) {
                             <thead>
                               <tr>
                                 <th scope="col">No</th>
+                                <th scope="col">Id Product</th>
                                 <th scope="col">Picture</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Description</th>
@@ -266,7 +267,7 @@ if(isset($_POST['submitdelete']) ) {
                             <?php
                                 while($row = $stmt->fetch(PDO::FETCH_ASSOC))  {  ?>   
                             <tr>
-                              
+                                <th>No</th>
                                 <th scope="row"><?php echo $row['id_produk']; ?></th>
                                 <td><img src="<?php echo $row['gambar'];?>"style="width: 80px; height: 80px; object-fit: cover" alt=""></td>
                                 <td><?php echo $row['nama']; ?></td>
@@ -381,6 +382,7 @@ if(isset($_POST['submitdelete']) ) {
                                 <th scope="col">No</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Username</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Tanggal Lahir</th>
                               </tr> 
                             </thead>
@@ -389,6 +391,7 @@ if(isset($_POST['submitdelete']) ) {
                                 <th scope="row">1</th>
                                 <td>asd</td>
                                 <td>asd</td>
+                                <td>asd@gmail.com</td>
                                 <td>2024</td>
                             </tbody>
                         </table>
