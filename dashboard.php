@@ -150,7 +150,6 @@ if(isset($_POST['formedit'])) {
 
 if(isset($_POST['submitdelete']) ) {
     $id_produk  = filter_input(INPUT_POST, 'id_produk', FILTER_SANITIZE_STRING);
-    echo $id_produk;
     $sql = ("DELETE from produk where id_produk = :id");
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id',$id_produk);
@@ -174,7 +173,6 @@ if(isset($_POST['submitdelete']) ) {
 <body>
     <div class="wrapper">
         <aside id="sidebar" class="js-sidebar">
-            <!-- Content For Sidebar -->
             <div class="h-100">
                 <div class="sidebar-logo">
                     <h1 href="#">Alta Bakery</h1>
@@ -270,7 +268,7 @@ if(isset($_POST['submitdelete']) ) {
                             <tr>
                               
                                 <th scope="row"><?php echo $row['id_produk']; ?></th>
-                                <td><img src="<?php echo $row['gambar'];?>"style="width: 100px;" alt=""></td>
+                                <td><img src="<?php echo $row['gambar'];?>"style="width: 80px; height: 80px; object-fit: cover" alt=""></td>
                                 <td><?php echo $row['nama']; ?></td>
                                 <td>
                                     <span class="description text-truncate"><?php echo $row['desc_produk']; ?></span>
@@ -349,6 +347,24 @@ if(isset($_POST['submitdelete']) ) {
             ?>
                             </tbody>
                         </table>
+                            <!-- Pagination -->
+                            <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-3">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </nav>
                     </div>
                     <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
                         <div class="mb-3">
@@ -359,10 +375,71 @@ if(isset($_POST['submitdelete']) ) {
                         <div class="mb-3">
                             <h4>Customers</h4>
                         </div>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Tanggal Lahir</th>
+                              </tr> 
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>asd</td>
+                                <td>asd</td>
+                                <td>2024</td>
+                            </tbody>
+                        </table>
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-3">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            </ul>
+                        </nav>
                     </div>
                     <div class="tab-pane fade" id="v-pills-setting" role="tabpanel" aria-labelledby="v-pills-setting-tab" tabindex="0">
                         <div class="mb-3">
                             <h4>Setting</h4>
+                        </div>
+                        <div class="container">
+                            <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start">
+                                <div class="nav flex-column nav-underline me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Change Password</a>
+                                </div>
+                                <div class="tab-content w-100" id="v-pills-tabContent">
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                                    <form action="" method="POST">
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" name="password1" id="password1" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Confirm Password</label>
+                                        <input type="password" class="form-control" name="password2" id="password2" required />
+                                    </div>
+                                    <button name="change_password" id="change_password" type="submit" class="btn btn-primary mb-3">Confirm</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -370,7 +447,12 @@ if(isset($_POST['submitdelete']) ) {
             </main>
         </div>
     </div>
-
+<script>
+    const sidebarToggle = document.querySelector("#sidebar-toggle");
+    sidebarToggle.addEventListener("click",function(){
+        document.querySelector("#sidebar").classList.toggle("collapsed");
+    });
+</script>
 </body>
 <script src="https://kit.fontawesome.com/47dcae39d3.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
