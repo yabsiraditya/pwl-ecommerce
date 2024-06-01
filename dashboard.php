@@ -13,17 +13,34 @@ if (isset($_SESSION['user'])) {
 }
 
 require 'koneksi.php';
-$sql = "SELECT * from produk order by id_produk ASC";
-$stmt = $db->prepare($sql);
-$stmt->execute();
 
+// $sql = "SELECT * from produk order by id_produk ASC";
+// $sql1 = "SELECT COUNT(*) FROM produk";  
+// $stmt = $db->prepare($sql);
+// $stmt->execute();
+// $stmt1 = $db->prepare($sql1);
+// $stmt1->execute();
+// $user = $stmt1->fetch(PDO::FETCH_ASSOC);
+$limit = 5;  // Jumlah item per halaman
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$start = ($page > 1) ? ($page * $limit) - $limit : 0;
+
+$total = $db->query("SELECT COUNT(*) FROM produk")->fetchColumn();
+$pages = ceil($total / $limit);
+
+$stmt = $db->prepare("SELECT * FROM produk ORDER BY updated_at DESC  LIMIT :start, :limit  ");
+$stmt->bindValue(':start', $start, PDO::PARAM_INT);
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->execute();
+$products = $stmt->fetchAll();
 
 if(isset($_POST['formsubmit'])) {
   // Ambil data dari formulir
   $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
   $desc = filter_input(INPUT_POST, 'desc', FILTER_SANITIZE_STRING);
   $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_STRING);
-
+  $randangka = rand(100,999);
+  $id_produk = "ALB" . $randangka;
   $target_dir = "img/";
   $target_file = $target_dir . basename($_FILES["gambar"]["name"]);
   $uploadOk = 1;
@@ -56,8 +73,9 @@ if(isset($_POST['formsubmit'])) {
       if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $target_file)) {
         $gambarBase64 = base64_encode(file_get_contents($target_file));
         $gambarData = 'data:' . mime_content_type($target_file) . ';charset=utf-8' . ';base64,' . $gambarBase64;
-          $sql = ("INSERT INTO produk (nama, desc_produk, harga, gambar, created_at) VALUES (:nama, :deskripsi, :harga, :gambar, now())");
+          $sql = ("INSERT INTO produk (id_produk, nama, desc_produk, harga, gambar, created_at) VALUES (:id_produk, :nama, :deskripsi, :harga, :gambar, now())");
           $stmt = $db->prepare($sql);
+          $stmt->bindParam(':id_produk', $id_produk);
           $stmt->bindParam(':nama', $name);
           $stmt->bindParam(':deskripsi', $desc);
           $stmt->bindParam(':harga', $price);
@@ -182,8 +200,8 @@ if(isset($_POST['submitdelete']) ) {
                         Admin Elements
                     </span>
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                      <a class="nav-link active" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</a>
-                      <a class="nav-link" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false">Products</a>
+                      <a class="nav-link " id="v-pills-dashboard-tab" data-bs-toggle="pill" href="#home" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</a>
+                      <a class="nav-link " id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" href="#products" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false">Products</a>
                       <a class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false">Orders</a>
                       <a class="nav-link" id="v-pills-customer-tab" data-bs-toggle="pill" data-bs-target="#v-pills-customer" type="button" role="tab" aria-controls="v-pills-customer" aria-selected="false">Customers</a>
                       <hr>
@@ -202,13 +220,13 @@ if(isset($_POST['submitdelete']) ) {
             <main class="content px-3 py-2">    
             <div class="container-fluid">
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
+                    <div class="tab-pane" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
                         <div class="mb-3">
                             <h4>Dashboard</h4>
                         </div>
                             <h6>Welcome Back, Admin</h6>
                     </div>
-                    <div class="tab-pane fade" id="v-pills-product" role="tabpanel" aria-labelledby="v-pills-product-tab" tabindex="0">
+                    <div class="tab-pane  " id="v-pills-product" role="tabpanel" aria-labelledby="v-pills-product-tab" tabindex="0" >
                         <div class="mb-3">
                             <h4>Product</h4>
                         </div>
@@ -264,10 +282,11 @@ if(isset($_POST['submitdelete']) ) {
                               </tr> 
                             </thead>
                             <tbody>
-                            <?php
-                                while($row = $stmt->fetch(PDO::FETCH_ASSOC))  {  ?>   
+                            <?php 
+                             $no = $start + 1;
+                             foreach ($products as $row):  ?>
                             <tr>
-                                <th>No</th>
+                            <td><?= $no ?></td>
                                 <th scope="row"><?php echo $row['id_produk']; ?></th>
                                 <td><img src="<?php echo $row['gambar'];?>"style="width: 80px; height: 80px; object-fit: cover" alt=""></td>
                                 <td><?php echo $row['nama']; ?></td>
@@ -344,28 +363,34 @@ if(isset($_POST['submitdelete']) ) {
                              
                               </tr>
                               <?php
-      }
+      $no++;
+    endforeach;
             ?>
                             </tbody>
                         </table>
                             <!-- Pagination -->
                             <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center mt-3">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                            </ul>
-                            </nav>
+                                <ul class="pagination justify-content-center mt-3">
+                                <?php if($page > 1): ?>
+                                <li class="page-item">
+ 
+    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <?php endif; ?>
+    <?php for ($i = 1; $i <= $pages; $i++): ?>
+      <li class="page-item <?= $page == $i ? 'active' : '' ?> "><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
+      <?php endfor; ?>
+      <?php if($page < $pages): ?>
+        <li class="page-item">
+        <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+        <?php endif; ?>
+    </ul>
+    </nav>
                     </div>
                     <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
                         <div class="mb-3">
