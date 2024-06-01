@@ -92,11 +92,11 @@ if ($search) {
   <!-- Search Bar -->
   <div class="d-flex justify-content-center align-items-center"> 
     <form action= "" method="GET">
-    <div class="container w-50 input-group mb-4 mt-5">
+    <div class="input-group mb-4 mt-5">
       <input type="text" class="form-control" placeholder="Search" aria-describedby="button-addon2" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>">
       <button class="btn btn-primary" type="button" name="submit" id="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
-              </form>
+    </form>
   </div>
   <!-- Product -->
   <div class="container">
