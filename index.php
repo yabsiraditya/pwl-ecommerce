@@ -8,10 +8,21 @@ if ($search) {
   $stmt = $db->prepare($sql);
   $stmt->execute(['search' => "%$search%"]);
 } else {
-  $sql = "SELECT * FROM produk order by id_produk DESC";
-  $stmt = $db->prepare($sql);
+  $limit = 5;  // Jumlah item per halaman
+  $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+  $start = ($page > 1) ? ($page * $limit) - $limit : 0;
+
+  $total = $db->query("SELECT COUNT(*) FROM produk")->fetchColumn();
+  $pages = ceil($total / $limit);
+
+  $stmt = $db->prepare("SELECT * FROM produk ORDER BY updated_at DESC  LIMIT :start, :limit  ");
+  $stmt->bindValue(':start', $start, PDO::PARAM_INT);
+  $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
   $stmt->execute();
+  $products = $stmt->fetchAll();
 }
+
+
 
 //  $produk = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -31,7 +42,7 @@ if ($search) {
   <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg shadow-sm" style="background-color: palegoldenrod;">
     <div class="container">
-      <a class="navbar-brand fw-bold" style="color: #C15440;" href="#">
+      <a class="navbar-brand fw-bold" style="color: #C15440;" href="index.php">
         <img src="img/logo.png" alt="Logo" width="50" class="d-inline-block align-text-center me-2">
         ALTA BAKERY
       </a>
@@ -102,7 +113,7 @@ if ($search) {
   <div class="container">
     <div class="row d-flex justify-content-start align-items-center">
     <?php
-      while($row = $stmt->fetch(PDO::FETCH_ASSOC))  {  ?>
+      foreach ($products as $row):  ?>
       <div class="col-6 col-md-4 mt-3">
         <div class="card">
           <img src="<?php echo $row['gambar']?>" class="card-img-top" alt="...">
@@ -113,41 +124,38 @@ if ($search) {
           </div>
         </div>
       </div>
-      <?php
-}
-            ?>
-             <?php
-      while($row = $stmt->fetch(PDO::FETCH_ASSOC))  {  ?>
-      <div class="col-6 col-md-4 mt-3">
-        <div class="card">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title"><?php echo $row['title'];?></h5>
-            <p class="card-text"><?php echo $row['desc_produk']; ?></p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <?php
-      }
-            ?>
+      <?php endforeach; ?>
     </div>
     <!-- Pagination -->
     <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center mt-3">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
+    <?php if($page > 1): ?>
+    <li class="page-item">
+        <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item active"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
+      <?php endif; ?>
+    <?php for ($i = 1; $i <= $pages; $i++): ?>
+      <!-- <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li> -->
+      <li class="page-item <?= $page == $i ? 'active' : '' ?> "><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
+      <!-- <li class="page-item">
         <a class="page-link" href="#" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
+      </li> -->
+      <?php endfor; ?>
+      <?php if($page < $pages): ?>
+        <li class="page-item">
+        <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
       </li>
+        <?php endif; ?>
     </ul>
     </nav>
   </div>

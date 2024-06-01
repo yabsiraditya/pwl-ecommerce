@@ -16,8 +16,6 @@ if (isset($_POST['change_data'])) {
   $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
   $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
   $user_id = $_SESSION['user_id'];
-  date_default_timezone_set('Asia/Jakarta');
-  $date2 = date("Y/m/d H:i:s", time());
   $sql = "UPDATE user set `name` = :nama, `tanggal_lahir` = :date, `updated_at` = now() where user_id = $user_id";
   $stmt = $db->prepare($sql);
   $params = array(
@@ -134,7 +132,7 @@ if(isset($_POST['change_password'])) {
                             <i class="fa fa-calendar"></i>
                         </span>
                       </span>
-                      <input type="text" class="form-control" name="date" id="date" readonly>
+                      <input type="text" class="form-control" name="date" id="date" value = "<?php echo $user['tanggal_lahir'] ?>" readonly>
                     </div>          
                   </div>
                   <button type="submit" class="btn btn-primary mb-3" name="change_data" id="change_data">Save</button>
