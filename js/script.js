@@ -38,6 +38,10 @@ $('#edit').submit(function(event){
 // do whatever you want here
 });
 
+var url = 'dashboard.php#products';
+if (url.match('#')) {
+  $('.nav-pills a[href="#' + url.split('#')[1] + '"]').tab('show');
+} 
 
 // Sidebar Dashboard
 const sidebarToggle = document.querySelector("#sidebar-toggle");
