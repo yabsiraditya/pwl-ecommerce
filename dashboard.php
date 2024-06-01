@@ -56,7 +56,7 @@ if(isset($_POST['formsubmit'])) {
       if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $target_file)) {
         $gambarBase64 = base64_encode(file_get_contents($target_file));
         $gambarData = 'data:' . mime_content_type($target_file) . ';charset=utf-8' . ';base64,' . $gambarBase64;
-          $sql = ("INSERT INTO produk (nama, desc_produk, harga, gambar) VALUES (:nama, :deskripsi, :harga, :gambar)");
+          $sql = ("INSERT INTO produk (nama, desc_produk, harga, gambar, created_at) VALUES (:nama, :deskripsi, :harga, :gambar, now())");
           $stmt = $db->prepare($sql);
           $stmt->bindParam(':nama', $name);
           $stmt->bindParam(':deskripsi', $desc);
@@ -116,7 +116,7 @@ if(isset($_POST['formedit'])) {
             if (move_uploaded_file($_FILES["gambaredit"]["tmp_name"], $target_file)) {
               $gambarBase64 = base64_encode(file_get_contents($target_file));
               $gambarData = 'data:' . mime_content_type($target_file) . ';charset=utf-8' . ';base64,' . $gambarBase64;
-                $sql = ("UPDATE produk set nama = :nama, desc_produk = :deskripsi, harga = :harga, gambar = :gambar where id_produk = :id") ;
+                $sql = ("UPDATE produk set nama = :nama, desc_produk = :deskripsi, harga = :harga, gambar = :gambar, updated_at = now() where id_produk = :id") ;
                 $stmt = $db->prepare($sql);
                 $stmt->bindParam(':id',$id_produk);
                 $stmt->bindParam(':nama', $name);
@@ -133,7 +133,7 @@ if(isset($_POST['formedit'])) {
             }
         }
     } else {
-                $sql = ("UPDATE produk set `nama` = :nama, `desc_produk`= :deskripsi, `harga` = :harga  where `id_produk` = :id");
+                $sql = ("UPDATE produk set `nama` = :nama, `desc_produk`= :deskripsi, `harga` = :harga, updated_at = now() where `id_produk` = :id");
                 $stmt = $db->prepare($sql);
                 $stmt->bindParam(':id',$id_produk);
                 $stmt->bindParam(':nama', $name);
@@ -150,7 +150,6 @@ if(isset($_POST['formedit'])) {
 
 if(isset($_POST['submitdelete']) ) {
     $id_produk  = filter_input(INPUT_POST, 'id_produk', FILTER_SANITIZE_STRING);
-    echo $id_produk;
     $sql = ("DELETE from produk where id_produk = :id");
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id',$id_produk);
