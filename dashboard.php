@@ -1,5 +1,8 @@
 <?php
 session_start();
+require 'koneksi.php';
+
+//cek user admin login
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
     } else {
@@ -12,28 +15,56 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-require 'koneksi.php';
 
-// $sql = "SELECT * from produk order by id_produk ASC";
-// $sql1 = "SELECT COUNT(*) FROM produk";  
-// $stmt = $db->prepare($sql);
-// $stmt->execute();
-// $stmt1 = $db->prepare($sql1);
-// $stmt1->execute();
-// $user = $stmt1->fetch(PDO::FETCH_ASSOC);
+//pagination
 $limit = 5;  // Jumlah item per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page > 1) ? ($page * $limit) - $limit : 0;
-
 $total = $db->query("SELECT COUNT(*) FROM produk")->fetchColumn();
 $pages = ceil($total / $limit);
 
+//show data product
 $stmt = $db->prepare("SELECT * FROM produk ORDER BY updated_at DESC  LIMIT :start, :limit  ");
 $stmt->bindValue(':start', $start, PDO::PARAM_INT);
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll();
 
+
+//show data customer
+$sqlcust = "SELECT * from user ORDER BY user_id ASC ";
+$stmt = $db->prepare($sqlcust);
+$stmt->execute();
+$user = $stmt->fetchAll();
+
+//change password admin
+if(isset($_POST["change_password"])) {
+if(strlen($_POST['password1']) <8) {
+    $error = "Password kurang dari 8";
+    echo $error;
+  } else {
+    if($_POST['password1'] === $_POST['password2']) {
+    $password1 = password_hash($_POST["password1"], PASSWORD_DEFAULT);
+    $password2 = password_hash($_POST["password2"], PASSWORD_DEFAULT);
+    $user_id = $_SESSION['user_id'];
+      $sql = "UPDATE user set `password` = :password, `updated_at` = now() where user_id = $user_id";
+      $stmt = $db->prepare($sql);
+      $params = array(
+        ":password" => $password1
+    );
+      $stmt->execute($params);
+      session_destroy();
+      header('Location: login.php');
+    } else {
+      $error = "Password tidak cocok";
+      echo $error;
+      echo $password1, $password2;
+    }
+  }
+}
+
+
+//submit data baru
 if(isset($_POST['formsubmit'])) {
   // Ambil data dari formulir
   $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
@@ -94,6 +125,7 @@ if(isset($_POST['formsubmit'])) {
     $msg = "tes";
 }
 
+//submit  edit
 if(isset($_POST['formedit'])) {
     $id_produk  = filter_input(INPUT_POST, 'id_produk', FILTER_SANITIZE_STRING);
     $name = filter_input(INPUT_POST, 'nameedit', FILTER_SANITIZE_STRING);
@@ -165,7 +197,7 @@ if(isset($_POST['formedit'])) {
     }
     
 }
-
+//submit delete
 if(isset($_POST['submitdelete']) ) {
     $id_produk  = filter_input(INPUT_POST, 'id_produk', FILTER_SANITIZE_STRING);
     $sql = ("DELETE from produk where id_produk = :id");
@@ -173,6 +205,7 @@ if(isset($_POST['submitdelete']) ) {
     $stmt->bindParam(':id',$id_produk);
     $stmt->execute();
 }
+$fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
 ?>
 
 
@@ -273,7 +306,7 @@ if(isset($_POST['submitdelete']) ) {
                             <thead>
                               <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">Id Product</th>
+                                <th scope="col">Product Code</th>
                                 <th scope="col">Picture</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Description</th>
@@ -293,7 +326,7 @@ if(isset($_POST['submitdelete']) ) {
                                 <td>
                                     <span class="description text-truncate"><?php echo $row['desc_produk']; ?></span>
                                 </td>
-                                <td><?php echo "Rp" . $row['harga']; ?></td>
+                                <td><?php echo $fmt->format($row['harga']); ?></td>
                                 <td>
                                     <!-- Edit Product -->
                                     <button type="button" class="btn btn-warning text-black" data-bs-toggle="modal" data-bs-target="#editProduct<?php echo $row['id_produk'] ?>"><i class="fa-solid fa-pen"></i></button>
@@ -308,7 +341,7 @@ if(isset($_POST['submitdelete']) ) {
                                             <div class="modal-body">
                                                     <div class="mb-3">
                                                         <label for="id_produk" class="form-label">ID Produk</label>
-                                                        <input type="text" class="form-control" id="id_produk" name="id_produk" value="<?php echo $row['id_produk'] ?>" required readonly>
+                                                        <input type="text" class="form-control" id="id_produk" name="id_produk" value="<?php echo $row['id_produk']; ?>" required readonly>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="formFile" class="form-label">Image Product</label>
@@ -316,15 +349,15 @@ if(isset($_POST['submitdelete']) ) {
                                                       </div>
                                                       <div class="mb-3">
                                                         <label for="name" class="form-label">Name</label>
-                                                        <input type="text" class="form-control" id="name" name="nameedit" value="<?php echo $row['nama'] ?>" required>
+                                                        <input type="text" class="form-control" id="name" name="nameedit" value="<?php echo $row['nama']; ?>" required>
                                                       </div>
                                                       <div class="mb-3">
                                                         <label for="description" class="form-label">Description</label>
-                                                        <input type="text" class="form-control" id="description" name="descedit" value="<?php echo $row['desc_produk'] ?>" required>
+                                                        <input type="text" class="form-control" id="description" name="descedit" value="<?php echo $row['desc_produk']; ?>" required>
                                                       </div>
                                                       <div class="mb-3">
                                                         <label for="price" class="form-label">Price</label>
-                                                        <input type="text" class="form-control" id="price" name="priceedit" value="<?php echo  $row['harga'] ?>"  required>
+                                                        <input type="text" class="form-control" id="price" name="priceedit" value="<?php echo  $row['harga']; ?>"  required>
                                                       </div>
                                             </div>
                                             <div class="modal-footer">
@@ -405,39 +438,31 @@ if(isset($_POST['submitdelete']) ) {
                             <thead>
                               <tr>
                                 <th scope="col">No</th>
+                                <th scope="col">USER ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Username</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Tanggal Lahir</th>
+                                <th scope="col">Last Login</th>
                               </tr> 
                             </thead>
                             <tbody>
+                            <?php
+                             $no = 0 + 1;
+                            foreach ($user as $row): ?>
                             <tr>
-                                <th scope="row">1</th>
-                                <td>asd</td>
-                                <td>asd</td>
-                                <td>asd@gmail.com</td>
-                                <td>2024</td>
+                                <th scope="row"><?=  $no ?></th>
+                                <td><?php echo $row['user_id']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['username']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['tanggal_lahir']; ?></td>
+                                <td><?php echo $row['last_login']; ?></td>
+                            </tr>
+                            <?php $no++; endforeach; ?>
                             </tbody>
                         </table>
-                        <!-- Pagination -->
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center mt-3">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                            </ul>
-                        </nav>
+                   
                     </div>
                     <div class="tab-pane fade" id="v-pills-setting" role="tabpanel" aria-labelledby="v-pills-setting-tab" tabindex="0">
                         <div class="mb-3">

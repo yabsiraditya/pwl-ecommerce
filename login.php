@@ -1,36 +1,40 @@
 <?php
 require 'koneksi.php';
+
+//cek sesi login, jika ada sesi akan diarahkan ke halaman index
 if (isset($_SESSION['user']) && $_SESSION['user'] === true) {
-  header('Location: index.php'); // Redirect to the index page or any other page
+  header('Location: index.php'); 
   exit();
 }
+
+//submit data login
 if(isset($_POST['submit'])){
 
   $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
   $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
   $sql = "SELECT * FROM user WHERE username=:username";
+  $sql2 = "UPDATE `user` set last_login := now() where username=:username";
   $stmt = $db->prepare($sql);
-  
+  $stmt2 = $db->prepare($sql2);
   // bind parameter ke query
   $params = array(
-      ":username" => $username,
+    ":username" => $username,
   );
-
   $stmt->execute($params);
-
+  $stmt2->execute($params);
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
   // jika user terdaftar
   if($user){
     if($user["username"] == "admin") {
-      if($password == $user["password"]){
+      if(password_verify($password, $user["password"])){
         // buat Session
         session_start();
         $_SESSION["user_id"] = $user['user_id'];
         $_SESSION["user"] = true;
         $_SESSION['role'] = $user['role'];
-        // login sukses, alihkan ke halaman timeline
+        // login sukses, alihkan ke halaman index
         header("Location: index.php");
     } else {
       $error = 'Password yang anda masukkan salah!';
@@ -43,12 +47,12 @@ if(isset($_POST['submit'])){
           $_SESSION["user_id"] = $user['user_id'];
           $_SESSION['user'] = true;
           $_SESSION['role'] = $user['role'];
-          // login sukses, alihkan ke halaman timeline
+          // login sukses, alihkan ke halaman index
           header("Location: index.php");
       }
       else {
         $error = 'Password yang anda masukkan salah!';
-      }
+         }
     } 
   } else {
     $error = "Username tidak ditemukan!";
