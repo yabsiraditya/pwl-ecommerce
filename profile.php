@@ -142,7 +142,24 @@ if(isset($_POST['change_password'])) {
                 </form>  
             </div>
             <div class="tab-pane fade" id="v-pills-transaction" role="tabpanel" aria-labelledby="v-pills-transaction-tab" tabindex="0">
- ... 
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Order Id</th>
+                    <th scope="col">Order Time</th>
+                    <th scope="col">Total</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>TRX10928598210</td>
+                    <td>1221312</td>
+                    <td>Rp 200202</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div class="tab-pane fade" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab" tabindex="0">
               <form action="" method="POST">
