@@ -2,27 +2,29 @@
 session_start();
 require 'koneksi.php';
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+//cek valid id produk
+if (!isset($_GET['id']) ) {
   echo "ID produk tidak valid.";
   exit;
 }
 
+//cek id produk dari database
 $id = $_GET['id'];
 $sql = "SELECT * FROM produk WHERE id_produk = :id";
 $stmt = $db->prepare($sql);
 $params = array(
   ":id" => $id,
 );
-
 $stmt->execute($params);
-
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
+//jika id produk tidak ditemukan
 if (!$product) {
   echo "Produk tidak ditemukan.";
   exit;
 }
 
+//menambahkan produk ke cart dimasukkan ke dalam session cart
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
   if(isset($_SESSION['user'])) {
     if (!isset($_SESSION['cart'])) {
@@ -39,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
           'quantity' => 1
       ];
   }
-
   // Redirect ke halaman keranjang setelah menambahkan produk
   header("Location: cart.php");
   exit;
@@ -47,9 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
     header("Location: login.php");
     exit;
   }
-  
 }
-//echo $product['desc_produk'];
+
+//jumlah item di keranjang
+$total_product = 0;  
+$total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+$fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
 ?>
 
 <!DOCTYPE html>
@@ -74,9 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <?php if(!isset($_SESSION['user'])): ?>
+          <?php else: ?>
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger">0</span></a>
+            <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?= $total_product; ?></span></a>
           </li>
+          <?php endif; ?>
           <li class="nav-item dropdown">
             <a class="nav-link dropbtn fw-medium" href="<?php if(!isset($_SESSION['user'])) {echo 'login.php';} else {echo '#';} ?> ">
             <i class="fa-solid fa-user"></i> Account
@@ -106,10 +113,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
       <div class="col-md-6">
         <h1><?php echo $product["nama"]; ?></h1>
         <p><?php echo $product["desc_produk"]; ?></p>
-        <h5><?php echo "Rp" . $product["harga"]; ?></h5>
+        <h5><?php echo $fmt->format($product["harga"]); ?></h5>
         <?php if(!isset($_SESSION['user'])): ?>
-          <h5>Login untuk melakukan transaksi!</h5>
-            <?php else: ?>
+          <h5><a href="login.php" style="color:red " >Login</a> untuk melakukan transaksi!</h5>
+            <?php elseif(isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+              <?php else: ?>
         <form method="post">
         <button name="add" type="submit" class="btn mt-2 mb-5 btn-primary w-100">Add Cart</button>
         </form>

@@ -25,7 +25,7 @@ if ($search) {
 
 $total_product = 0;  
 $total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
-
+$fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
 
 ?>
 
@@ -51,9 +51,12 @@ $total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <?php if(!isset($_SESSION['user'])): ?>
+          <?php else: ?>
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="cart.php"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?php echo $total_product; ?></span></a>
+            <a class="nav-link fw-medium" href="cart.php"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?= $total_product; ?></span></a>
           </li>
+          <?php endif; ?>
           <li class="nav-item dropdown">
             <a class="nav-link dropbtn fw-medium" href="<?php if(!isset($_SESSION['user'])) {echo 'login.php';} else {echo '#';} ?> ">
             <i class="fa-solid fa-user"></i> Account
@@ -119,7 +122,7 @@ $total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
           <img src="<?php echo $row['gambar']?>" class="card-img-top" style="height: 300px; object-fit: cover;" alt="...">
           <div class="card-body">
             <h5 class="card-title"><?php echo $row['nama'];?></h5>
-            <p class="card-text"><?php echo "Rp" . $row['harga']; ?></p>
+            <p class="card-text"><?php echo $fmt->format($row['harga']);?></p>
             <a href="detail.php?id=<?= $row['id_produk'] ?>" class="btn btn-primary">Show Product</a>
           </div>
         </div>
