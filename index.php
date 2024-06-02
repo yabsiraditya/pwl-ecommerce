@@ -108,7 +108,7 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
     <form action= "" method="GET">
     <div class="input-group mb-4 mt-5">
       <input type="text" class="form-control" placeholder="Search" aria-describedby="button-addon2" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>">
-      <button class="btn btn-primary" type="button" name="submit" id="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
     </form>
   </div>
