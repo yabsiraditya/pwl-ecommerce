@@ -16,7 +16,7 @@ if ($search) {
   $total = $db->query("SELECT COUNT(*) FROM produk")->fetchColumn();
   $pages = ceil($total / $limit);
 
-  $stmt = $db->prepare("SELECT * FROM produk ORDER BY updated_at DESC  LIMIT :start, :limit  ");
+  $stmt = $db->prepare("SELECT * FROM produk ORDER BY updated_at DESC LIMIT :start, :limit  ");
   $stmt->bindValue(':start', $start, PDO::PARAM_INT);
   $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
   $stmt->execute();
