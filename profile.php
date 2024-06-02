@@ -97,12 +97,15 @@ if(isset($_POST['change_password'])) {
       </div>
     </div>
   </nav>
+
+  <!-- Box -->
   <div class="container">
     <div class="card shadow-sm">
       <div class="card-body">
         <div class="d-flex align-items-start">
           <div class="nav flex-column nav-underline me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</a>
+            <a class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</a>
+            <a class="nav-link" id="v-pills-transaction-tab" data-bs-toggle="pill" data-bs-target="#v-pills-transaction" type="button" role="tab" aria-controls="v-pills-transaction" aria-selected="false">Transaction</a>
             <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Change Password</a>
           </div>
           <div class="tab-content w-100" id="v-pills-tabContent">
@@ -137,6 +140,9 @@ if(isset($_POST['change_password'])) {
                   </div>
                   <button type="submit" class="btn btn-primary mb-3" name="change_data" id="change_data">Save</button>
                 </form>  
+            </div>
+            <div class="tab-pane fade show active" id="v-pills-transaction" role="tabpanel" aria-labelledby="v-pills-transaction-tab" tabindex="0">
+ ... 
             </div>
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
               <form action="" method="POST">
@@ -174,6 +180,7 @@ if(isset($_POST['change_password'])) {
     </ul>
   </footer>
   </div>
+
   <script>
     $(function() {
       $('#datepicker').datepicker({
