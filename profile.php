@@ -97,16 +97,19 @@ if(isset($_POST['change_password'])) {
       </div>
     </div>
   </nav>
+
+  <!-- Box -->
   <div class="container">
     <div class="card shadow-sm">
       <div class="card-body">
         <div class="d-flex align-items-start">
           <div class="nav flex-column nav-underline me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</a>
-            <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Change Password</a>
+            <a class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</a>
+            <a class="nav-link" id="v-pills-transaction-tab" data-bs-toggle="pill" data-bs-target="#v-pills-transaction" type="button" role="tab" aria-controls="v-pills-transaction" aria-selected="false">Transaction</a>
+            <a class="nav-link" id="v-pills-password-tab" data-bs-toggle="pill" data-bs-target="#v-pills-password" type="button" role="tab" aria-controls="v-pills-password" aria-selected="false">Change Password</a>
           </div>
           <div class="tab-content w-100" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+            <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
                 <form action="" method="POST">
                   <fieldset disabled>
                   <div class="mb-3">
@@ -138,7 +141,27 @@ if(isset($_POST['change_password'])) {
                   <button type="submit" class="btn btn-primary mb-3" name="change_data" id="change_data">Save</button>
                 </form>  
             </div>
-            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+            <div class="tab-pane fade" id="v-pills-transaction" role="tabpanel" aria-labelledby="v-pills-transaction-tab" tabindex="0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Order Id</th>
+                    <th scope="col">Order Time</th>
+                    <th scope="col">Total</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>TRX10928598210</td>
+                    <td>1221312</td>
+                    <td>Rp 200202</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab" tabindex="0">
               <form action="" method="POST">
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
@@ -174,6 +197,7 @@ if(isset($_POST['change_password'])) {
     </ul>
   </footer>
   </div>
+
   <script>
     $(function() {
       $('#datepicker').datepicker({

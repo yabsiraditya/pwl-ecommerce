@@ -233,8 +233,8 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
                         Admin Elements
                     </span>
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                      <a class="nav-link " id="v-pills-dashboard-tab" data-bs-toggle="pill" href="#home" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</a>
-                      <a class="nav-link " id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" href="#products" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false">Products</a>
+                      <a class="nav-link active" id="v-pills-dashboard-tab" data-bs-toggle="pill" href="#home" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</a>
+                      <a class="nav-link" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" href="#products" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false">Products</a>
                       <a class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false">Orders</a>
                       <a class="nav-link" id="v-pills-customer-tab" data-bs-toggle="pill" data-bs-target="#v-pills-customer" type="button" role="tab" aria-controls="v-pills-customer" aria-selected="false">Customers</a>
                       <hr>
@@ -253,7 +253,7 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
             <main class="content px-3 py-2">    
             <div class="container-fluid">
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
+                    <div class="tab-pane show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
                         <div class="mb-3">
                             <h4>Dashboard</h4>
                         </div>
@@ -407,28 +407,48 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
                                 <?php if($page > 1): ?>
                                 <li class="page-item">
  
-    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <?php endif; ?>
-    <?php for ($i = 1; $i <= $pages; $i++): ?>
-      <li class="page-item <?= $page == $i ? 'active' : '' ?> "><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
-      <?php endfor; ?>
-      <?php if($page < $pages): ?>
-        <li class="page-item">
-        <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-        <?php endif; ?>
-    </ul>
-    </nav>
+                                <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <?php endif; ?>
+                                <?php for ($i = 1; $i <= $pages; $i++): ?>
+                                <li class="page-item <?= $page == $i ? 'active' : '' ?> "><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
+                                <?php endfor; ?>
+                                <?php if($page < $pages): ?>
+                                    <li class="page-item">
+                                    <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </nav>
                     </div>
                     <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
                         <div class="mb-3">
                             <h4>Orders</h4>
                         </div>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Order Id</th>
+                                <th scope="col">Order Time</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Total</th>
+                              </tr> 
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>TRX10928598210</td>
+                                <td>1212</td>
+                                <td>Yabsir</td>
+                                <td>Rp 200202</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="tab-pane fade" id="v-pills-customer" role="tabpanel" aria-labelledby="v-pills-customer-tab" tabindex="0">
                         <div class="mb-3">
@@ -442,7 +462,7 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
                                 <th scope="col">Name</th>
                                 <th scope="col">Username</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Tanggal Lahir</th>
+                                <th scope="col">Date Of Birth</th>
                                 <th scope="col">Last Login</th>
                               </tr> 
                             </thead>
