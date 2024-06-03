@@ -2,16 +2,31 @@
 session_start();
 require('koneksi.php');
 if (isset($_SESSION['user'])) {
+  if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+    header('Location: index.php');
+  }
+  else {
   $user_id = $_SESSION['user_id'];
   $sql = "SELECT * from user where user_id = $user_id";
   $stmt = $db->prepare($sql);
   $stmt->execute();
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
 } else {
-    header('Location:login.php');
-    exit();
+  header('Location: login.php');
 }
 
+//show data order
+$sqlorder = "SELECT * from order_produk where order_name = :name ORDER BY order_date DESC";
+$name = $_SESSION['user_name'];
+$stmt = $db->prepare($sqlorder);
+$params = array(
+  ":name" => $name,
+);
+$stmt->execute($params);
+$order = $stmt->fetchAll();
+
+//change data user
 if (isset($_POST['change_data'])) {
   $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
   $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
@@ -47,7 +62,7 @@ if(isset($_POST['change_password'])) {
     }
   }
 }
-
+$fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +90,7 @@ if(isset($_POST['change_password'])) {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger">0</span></a>
+            <a class="nav-link fw-medium" href="cart.php"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger">0</span></a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropbtn fw-medium" href="<?php if(!isset($_SESSION['user'])) {echo 'login.php';} else {echo '#';} ?> ">
@@ -84,7 +99,7 @@ if(isset($_POST['change_password'])) {
             <?php if(!isset($_SESSION['user'])): ?>
             <?php else: ?>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item fw-medium" href="#">Profile</a></li>
+              <li><a class="dropdown-item fw-medium" href="profile.php">Profile</a></li>
               <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
               <li><a class="dropdown-item fw-medium" href="dashboard.php">Dashboard</a></li>
               <?php endif; ?>
@@ -152,12 +167,16 @@ if(isset($_POST['change_password'])) {
                   </tr> 
                 </thead>
                 <tbody>
+                <?php
+                             $no = 0 + 1;
+                            foreach ($order as $row): ?>
                   <tr>
-                    <th scope="row">1</th>
-                    <td>TRX10928598210</td>
-                    <td>1221312</td>
-                    <td>Rp 200202</td>
-                  </tr>
+                    <th scope="row"><?= $no?></th>
+                    <td><?= $row['order_id']; ?></td>
+                                <td><?= $row['order_date'] ?></td>
+                                <td><?= $fmt->format($row['order_total']); ?></td>
+                            </tr>
+                            <?php $no++; endforeach; ?>
                 </tbody>
               </table>
             </div>
