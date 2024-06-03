@@ -74,6 +74,12 @@ if(isset($_POST['change_password'])) {
 $total_product = 0;  
 $total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
+
+$total = 0;
+//total item dalam keranjang
+$total_product = 0;  
+$total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+$fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +116,10 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
             <?php if(!isset($_SESSION['user'])): ?>
             <?php else: ?>
             <ul class="dropdown-menu">
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+              <?php else: ?>
               <li><a class="dropdown-item fw-medium" href="profile.php">Profile</a></li>
+              <?php endif; ?>
               <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
               <li><a class="dropdown-item fw-medium" href="dashboard.php">Dashboard</a></li>
               <?php endif; ?>
