@@ -38,6 +38,7 @@ if (isset($_POST['change_data'])) {
     ":date" => $date
 );
   $stmt->execute($params);
+  header("Refresh: 0.1");
 }
 
 if(isset($_POST['change_password'])) {
