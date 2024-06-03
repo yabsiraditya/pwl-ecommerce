@@ -118,6 +118,7 @@ if(isset($_POST['formsubmit'])) {
 
           if ($stmt->execute()) {
               $msg = "Data berhasil disimpan.";
+              header("Refresh: 0.1");
           } else {
               $msg ="Terjadi kesalahan saat menyimpan data.";
           }
@@ -177,6 +178,7 @@ if(isset($_POST['formedit'])) {
                 $stmt->bindParam(':gambar', $gambarData);
                 if ($stmt->execute()) {
                     $msg= "Data berhasil disimpan.";
+                    header("Refresh: 0.1");
                 } else {
                     $msg ="Terjadi kesalahan saat menyimpan data.";
                 }
@@ -193,6 +195,7 @@ if(isset($_POST['formedit'])) {
                 $stmt->bindParam(':harga', $price);
                 if ($stmt->execute()) {
                     $msg = "Data berhasil disimpan.";
+                    header("Refresh: 0.1");
                 } else {
                     $msg ="Terjadi kesalahan saat menyimpan data.";
                 }
@@ -206,6 +209,7 @@ if(isset($_POST['submitdelete']) ) {
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id',$id_produk);
     $stmt->execute();
+    header("Refresh: 0.1");
 }
 $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
 ?>
