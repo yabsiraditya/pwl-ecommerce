@@ -86,13 +86,13 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
     <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="10000">
-          <img src="img/logo.png" class="d-block w-100 slider" alt="...">
+          <img src="img/Slider1.jpg" class="d-block w-100 slider" alt="...">
         </div>
         <div class="carousel-item" data-bs-interval="2000">
-          <img src="img/logo.png" class="d-block w-100 slider" alt="...">
+          <img src="img/Slider2.jpg" class="d-block w-100 slider" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="img/logo.png" class="d-block w-100 slider" alt="...">
+          <img src="img/Slider3.jpg" class="d-block w-100 slider" alt="...">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
