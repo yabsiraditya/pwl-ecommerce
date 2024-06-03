@@ -95,7 +95,7 @@ if(isset($_POST['register'])) {
               </div>
               <div class="mb-2">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control rounded-pill" name="password" id="password" onKeyup='checkLength()' required />
+                <input type="password" class="form-control rounded-pill" name="password" id="password" ' required />
                 <span id="errorSpan"></span>
               </div>
               <p class="mb-3" style="cursor:pointer;" onclick="showPassword()"><span class="field-icon fa fa-fw fa-eye toggle-password"></span> Show Password</p>
