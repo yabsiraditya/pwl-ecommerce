@@ -27,16 +27,21 @@ field.addEventListener("input", function() {
   button.disabled = field.value.length < 8;
 })
 
-$('#edit').submit(function(event){
-  // cancels the form submission
-  event.preventDefault();
+const field1 = document.getElementById("total");
+const button1 = document.getElementById("checkout");
 
-  //If the form is valid open modal
-  if($('#edit')[0].checkValidity() ){
-    $('#myModal').modal('toggle');
-  }
-// do whatever you want here
-});
+field1.addEventListener("input", function() {
+  button1.disabled = field.value <= 1;
+})
+
+function success() {
+  if(document.getElementById("total").value <= 0) { 
+           document.getElementById('checkout').disabled = true; 
+       } else { 
+           document.getElementById('checkout').disabled = false;
+       }
+   }
+
 
 var url = 'dashboard.php#products';
 if (url.match('#')) {

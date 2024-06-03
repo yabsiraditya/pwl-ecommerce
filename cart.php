@@ -165,9 +165,12 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
             <div class="d-flex justify-content-between">
               <h5>Total</h5>
               <h5><?php echo $fmt->format($total); ?></h5>
-              <input type="text" style="display: none" name="total" value="<?php echo $total?>">
+              <input type="text" style="display: none" name="total" id="total" value="<?php echo $total?>">
             </div>
-            <button name="checkout" id="checkout" type="submit" class="btn mt-3 mb-2 btn-primary w-100">Checkout</button>
+            <?php if($total === 0 ): ?>
+              <?php else: ?>
+            <button name="checkout" id="checkout" type="submit"class="btn mt-3 mb-2 btn-primary w-100">Checkout</button>
+            <?php endif; ?>
           </div>
           </form>
         </div>
@@ -176,13 +179,13 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
   </div>
 </body>
 <script>
-   function increment() {
-      document.getElementById('quantity').stepUp(1);
+   function success() {
+  if(document.getElementById("total").value.length <= 1) { 
+           document.getElementById('checkout').enabled = false; 
+       } else { 
+           document.getElementById('checkout').enabled = true;
+       }
    }
-   function decrement() {
-      document.getElementById('quantity').stepDown(1);
-   }
-   
 </script>
 <script src="https://kit.fontawesome.com/47dcae39d3.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
