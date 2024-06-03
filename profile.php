@@ -46,7 +46,7 @@ $params = array(
 );
 $stmt->execute($params);
 $order = $stmt->fetchAll();
-  header("Refresh: 0.1");
+  header("Refresh: 0");
 }
 
 if(isset($_POST['change_password'])) {
