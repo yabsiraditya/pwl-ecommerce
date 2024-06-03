@@ -6,16 +6,54 @@ include 'koneksi.php';
 if (isset($_SESSION['user'])) {
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
+        $total = 0;
     }
     $cart = $_SESSION['cart'];
-    $total = 0;
 } else {
-    header('Location: login.php');
+   header('Location: login.php');
 }
 
+if(isset($_POST['checkout'])) {
+    // header("Location: index.php");
+    if (!isset($_SESSION['cart'])) {
+      // $total = 1;
+      // echo $total;
+      // header("Location: checkout.html");
+  } else {
+    $randangka = rand(1,9999999);
+    $order_id = "TRX" . $randangka;
+    $order_name = $_SESSION['user_name'];
+    $order_total = $_POST['total'];
+    $sql = "INSERT INTO order_produk (order_id, order_name, order_total) 
+    VALUES (:id, :name, :total)";
+     $stmt = $db->prepare($sql);
+     // bind parameter ke query
+     $params = array(
+        "id" => $order_id,
+        "name" => $order_name,
+        "total" => $order_total
+     );
+     $saved = $stmt->execute($params);
+     if (!isset($_SESSION['order'])) {
+      $_SESSION['order'] = [];
+  } else {
+    $_SESSION['order'][$id] = [
+      'id' => $order_id,
+      'name'=> $order_name,
+      'total' => $order_total
+  ];
+  //$cart.unset();
+  $_SESSION['cart'] = [];
+  }
+     
+    header("Location: checkout.php");
+  }
+  // $total = 1;
+  // echo $total;
+  }
+
 //update quantity
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['action']) && isset($_POST['id'])) {
+if (isset($_POST['action']) && isset($_POST['id'])) {
         $id = $_POST['id'];
         if (isset($_SESSION['cart'][$id])) {
             if ($_POST['action'] == 'increase') {
@@ -28,10 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           }
         }
     } 
-    header("Location: cart.php");
-    exit;
-}
-
+$total = 0;
 //total item dalam keranjang
 $total_product = 0;  
 $total_product += isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
@@ -60,7 +95,7 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?php echo $total_product; ?></span></a>
+            <a class="nav-link fw-medium" href="cart.php"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?php echo $total_product; ?></span></a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropbtn fw-medium" href="<?php if(!isset($_SESSION['user'])) {echo 'login.php';} else {echo '#';} ?> ">
@@ -131,14 +166,17 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
       <div class="col-md-4">
         <div class="card">
           <div class="card-body bg-light rounded-3 p-3">
+          <form action="" method="POST">
             <h1>Summary</h1>
             <hr>
             <div class="d-flex justify-content-between">
               <h5>Total</h5>
               <h5><?php echo $fmt->format($total); ?></h5>
+              <input type="text" style="display: none" name="total" value="<?php echo $total?>">
             </div>
-            <button name="add" type="submit" class="btn mt-3 mb-2 btn-primary w-100">Checkout</button>
+            <button name="checkout" id="checkout" type="submit" class="btn mt-3 mb-2 btn-primary w-100">Checkout</button>
           </div>
+          </form>
         </div>
       </div>
     </div>

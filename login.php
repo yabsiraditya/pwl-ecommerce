@@ -1,6 +1,6 @@
 <?php
 require 'koneksi.php';
-
+session_start();
 //cek sesi login, jika ada sesi akan diarahkan ke halaman index
 if (isset($_SESSION['user']) && $_SESSION['user'] === true) {
   header('Location: index.php'); 
@@ -32,6 +32,7 @@ if(isset($_POST['submit'])){
         // buat Session
         session_start();
         $_SESSION["user_id"] = $user['user_id'];
+        $_SESSION['user_name'] = $user['username'];
         $_SESSION["user"] = true;
         $_SESSION['role'] = $user['role'];
         // login sukses, alihkan ke halaman index
@@ -45,6 +46,7 @@ if(isset($_POST['submit'])){
           // buat Session
           session_start();
           $_SESSION["user_id"] = $user['user_id'];
+          $_SESSION['user_name'] = $user['username'];
           $_SESSION['user'] = true;
           $_SESSION['role'] = $user['role'];
           // login sukses, alihkan ke halaman index

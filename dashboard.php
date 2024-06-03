@@ -37,6 +37,12 @@ $stmt = $db->prepare($sqlcust);
 $stmt->execute();
 $user = $stmt->fetchAll();
 
+//show data order
+$sqlorder = "SELECT * from order_produk  ORDER BY order_date DESC";
+$stmt = $db->prepare($sqlorder);
+$stmt->execute();
+$order = $stmt->fetchAll();
+
 //change password admin
 if(isset($_POST["change_password"])) {
 if(strlen($_POST['password1']) <8) {
@@ -57,8 +63,6 @@ if(strlen($_POST['password1']) <8) {
       header('Location: login.php');
     } else {
       $error = "Password tidak cocok";
-      echo $error;
-      echo $password1, $password2;
     }
   }
 }
@@ -80,13 +84,13 @@ if(isset($_POST['formsubmit'])) {
   if($check !== false) {
       $uploadOk = 1;
   } else {
-      echo "File is not an image.";
+      echo "File ini bukan gambar!";
       $uploadOk = 0;
   }
 
   // Check file size
-  if ($_FILES["gambar"]["size"] > 500000000) {
-      echo "Sorry, your file is too large.";
+  if ($_FILES["gambar"]["size"] > 500000) {
+      echo "File anda terlalu besar!";
       $uploadOk = 0;
   }
 
@@ -118,11 +122,9 @@ if(isset($_POST['formsubmit'])) {
               $msg ="Terjadi kesalahan saat menyimpan data.";
           }
       } else {
-          $msg = "Sorry, there was an error uploading your file.";
+          $msg = "Terjadi kesalahan saat menyimpan data";
       }
   }
-} else {
-    $msg = "tes";
 }
 
 //submit  edit
@@ -226,12 +228,9 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
         <aside id="sidebar" class="js-sidebar">
             <div class="h-100">
                 <div class="sidebar-logo">
-                    <h1 href="#">Alta Bakery</h1>
+                    <h1 href="index.php" class="mb-4">Alta Bakery</h1>
                 </div>
                 <ul class="sidebar-nav">
-                    <span class="sidebar-header">
-                        Admin Elements
-                    </span>
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                       <a class="nav-link active" id="v-pills-dashboard-tab" data-bs-toggle="pill" href="#home" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</a>
                       <a class="nav-link" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" href="#products" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false">Products</a>
@@ -440,13 +439,17 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
                               </tr> 
                             </thead>
                             <tbody>
+                            <?php
+                             $no = 0 + 1;
+                            foreach ($order as $row): ?>
                             <tr>
-                                <th scope="row">1</th>
-                                <td>TRX10928598210</td>
-                                <td>1212</td>
-                                <td>Yabsir</td>
-                                <td>Rp 200202</td>
+                                <th scope="row"><?= $no ?></th>
+                                <td><?= $row['order_id']; ?></td>
+                                <td><?= $row['order_date'] ?></td>
+                                <td><?= $row['order_name'] ?></td>
+                                <td><?= $fmt->format($row['order_total']); ?></td>
                             </tr>
+                            <?php $no++; endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -456,6 +459,7 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
                         </div>
                         <table class="table">
                             <thead>
+        
                               <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">USER ID</th>

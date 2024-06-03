@@ -81,7 +81,7 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
         <?php if(!isset($_SESSION['user'])): ?>
           <?php else: ?>
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?= $total_product; ?></span></a>
+            <a class="nav-link fw-medium" href="cart.php"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="badge rounded-circle text-bg-danger"><?= $total_product; ?></span></a>
           </li>
           <?php endif; ?>
           <li class="nav-item dropdown">

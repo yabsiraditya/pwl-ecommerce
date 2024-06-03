@@ -16,7 +16,7 @@ if ($search) {
   $total = $db->query("SELECT COUNT(*) FROM produk")->fetchColumn();
   $pages = ceil($total / $limit);
 
-  $stmt = $db->prepare("SELECT * FROM produk ORDER BY updated_at DESC  LIMIT :start, :limit  ");
+  $stmt = $db->prepare("SELECT * FROM produk ORDER BY updated_at DESC LIMIT :start, :limit  ");
   $stmt->bindValue(':start', $start, PDO::PARAM_INT);
   $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
   $stmt->execute();
@@ -64,7 +64,10 @@ $fmt = new NumberFormatter($locale = 'id_ID', NumberFormatter::CURRENCY);
             <?php if(!isset($_SESSION['user'])): ?>
             <?php else: ?>
             <ul class="dropdown-menu">
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+              <?php else: ?>
               <li><a class="dropdown-item fw-medium" href="profile.php">Profile</a></li>
+              <?php endif; ?>
               <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
               <li><a class="dropdown-item fw-medium" href="dashboard.php">Dashboard</a></li>
               <?php endif; ?>
