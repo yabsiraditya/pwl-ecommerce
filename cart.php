@@ -14,11 +14,8 @@ if (isset($_SESSION['user'])) {
 }
 
 if(isset($_POST['checkout'])) {
-    // header("Location: index.php");
+  if(isset($_SESSION['user'])) {
     if (!isset($_SESSION['cart'])) {
-      // $total = 1;
-      // echo $total;
-      // header("Location: checkout.html");
   } else {
     $randangka = rand(1,9999999);
     $order_id = "TRX" . $randangka;
@@ -27,30 +24,23 @@ if(isset($_POST['checkout'])) {
     $sql = "INSERT INTO order_produk (order_id, order_name, order_total) 
     VALUES (:id, :name, :total)";
      $stmt = $db->prepare($sql);
-     // bind parameter ke query
      $params = array(
         "id" => $order_id,
         "name" => $order_name,
         "total" => $order_total
      );
      $saved = $stmt->execute($params);
-     if (!isset($_SESSION['order'])) {
-      $_SESSION['order'] = [];
-  } else {
-    $_SESSION['order'][$id] = [
+     $_SESSION['order'][$id] = [
       'id' => $order_id,
       'name'=> $order_name,
       'total' => $order_total
   ];
-  //$cart.unset();
   $_SESSION['cart'] = [];
+  
+  header("Location: checkout.php");
+}
   }
-     
-    header("Location: checkout.php");
-  }
-  // $total = 1;
-  // echo $total;
-  }
+}
 
 //update quantity
 if (isset($_POST['action']) && isset($_POST['id'])) {
