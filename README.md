@@ -11,8 +11,8 @@ Website ini dikembangkan menggunakan teknologi berikut:
 
 ## Pengembang 
 
-- [Yabsir Aditya]()
-- [Adriansyah Syaputra]()
+- [Yabsir Aditya](https://github.com/yabsiraditya)
+- [Adriansyah Syaputra](https://github.com/Adrnsyh7)
 
 ## Tampilan
 ![AltaBakery](./pwl-ecommerce.png)
